@@ -1,0 +1,9 @@
+metric,value,format,scope
+Records analysed,3000000.0000000000,count,Full source
+Pearson correlation: clues vs rating,0.0352796493,correlation,Full source
+Spearman correlation: clues vs rating,0.0409313550,correlation,Full source
+Scanning-only share,0.4313603333,percentage,Full source
+Expert share,0.0218763333,percentage,Full source
+23-clue minimum rating,0.0000000000,rating,Full source
+23-clue maximum rating,8.5000000000,rating,Full source
+Surface-feature model test R-squared,0.0069241070,r_squared,"Deterministic sample of 100,000"

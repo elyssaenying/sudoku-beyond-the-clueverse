@@ -1,0 +1,20 @@
+{
+  "source_rows": 3000000,
+  "source_sha256": "8a54b8864acacc6df483896709357e1de1a68391a079b37f5d8ec4e0bb1442f3",
+  "pearson_clues_difficulty": 0.035279649281879884,
+  "spearman_clues_difficulty": 0.0409313549501656,
+  "beginner_share": 0.43136033333333335,
+  "expert_share": 0.021876333333333334,
+  "surface_feature_test_r_squared": 0.006924107008595803,
+  "output_files": [
+    "anomaly_examples.csv",
+    "clue_difficulty_summary.csv",
+    "dashboard_kpis.csv",
+    "difficulty_heatmap.csv",
+    "feature_correlations.csv",
+    "model_comparison.csv",
+    "structural_sample.csv",
+    "tier_summary.csv",
+    "validation_summary.csv"
+  ]
+}

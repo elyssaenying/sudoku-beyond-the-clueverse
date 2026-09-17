@@ -1,0 +1,13 @@
+feature,pearson_correlation,absolute_correlation
+row_clue_sd,-0.04858007,0.04858007
+minimum_row_clues,0.04238542,0.04238542
+column_clue_sd,-0.03962459,0.03962459
+clues,0.03358057,0.03358057
+minimum_column_clues,0.03274766,0.03274766
+minimum_box_clues,0.02614206,0.02614206
+box_clue_sd,-0.01565983,0.01565983
+edge_clues,0.00972094,0.00972094
+digit_clue_sd,-0.00816246,0.00816246
+rotational_symmetry,-0.00362966,0.00362966
+corner_clues,0.00158817,0.00158817
+centre_is_clue,0.00004061,0.00004061

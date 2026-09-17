@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A data-analysis case study testing whether clue count can reliably label Sudoku difficulty across three million puzzles."
+    />
+    <meta name="theme-color" content="#f4f1e9" />
+    <title>Sudoku Difficulty Audit — Data Analysis Case Study</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the case study</a>
+
+    <header class="site-header" aria-label="Primary navigation">
+      <a class="wordmark" href="#top" aria-label="Sudoku Difficulty Audit home">
+        <span class="wordmark-grid" aria-hidden="true">3×3</span>
+        <span>Sudoku Difficulty Audit</span>
+      </a>
+      <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#method">Method</a>
+        <a class="nav-cta" href="tableau/Sudoku%20Difficulty%20Audit.twb" download>Workbook ↗</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero section" id="top">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Portfolio case study · Python + Tableau · 3,000,000 puzzles</p>
+          <h1>Can you judge a Sudoku by its <em>clues?</em></h1>
+          <div class="answer-block">
+            <p class="answer-label">Short answer</p>
+            <p class="answer">No—not reliably.</p>
+            <p>
+              Clue count is almost unrelated to the supplied solver difficulty. A product using it as
+              the main labelling rule would give players inconsistent expectations.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#dashboard">See the dashboard</a>
+            <a class="button button-secondary" href="#story">Why I investigated</a>
+          </div>
+          <dl class="audience-note">
+            <div>
+              <dt>Decision owner</dt>
+              <dd>Sudoku product or puzzle-content lead</dd>
+            </div>
+            <div>
+              <dt>Decision</dt>
+              <dd>How to assign difficulty at catalogue scale</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero-visual reveal" aria-label="Decorative Sudoku grid illustrating mixed difficulty">
+          <div class="grid-caption">
+            <span>Surface appearance</span>
+            <span>≠</span>
+            <span>solving effort</span>
+          </div>
+          <div class="sudoku-grid" aria-hidden="true">
+            <span>8</span><span></span><span>1</span><span></span><span></span><span>6</span><span></span><span>9</span><span></span>
+            <span></span><span>4</span><span></span><span>7</span><span></span><span></span><span>3</span><span></span><span></span>
+            <span>6</span><span></span><span></span><span></span><span>2</span><span></span><span></span><span></span><span>5</span>
+            <span></span><span>8</span><span></span><span>2</span><span></span><span></span><span></span><span>5</span><span></span>
+            <span>4</span><span></span><span></span><span></span><span class="focus-cell">?</span><span></span><span></span><span></span><span>7</span>
+            <span></span><span>2</span><span></span><span></span><span></span><span>9</span><span></span><span>1</span><span></span>
+            <span>2</span><span></span><span></span><span></span><span>8</span><span></span><span></span><span></span><span>9</span>
+            <span></span><span></span><span>7</span><span></span><span></span><span>4</span><span></span><span>6</span><span></span>
+            <span></span><span>6</span><span></span><span>1</span><span></span><span></span><span>8</span><span></span><span>3</span>
+          </div>
+          <p class="visual-note">The familiar shortcut was the thing being tested—not assumed.</p>
+        </div>
+      </section>
+
+      <section class="metric-band" aria-label="Key findings">
+        <div class="metric reveal">
+          <strong>3.0M</strong>
+          <span>validated puzzles</span>
+        </div>
+        <div class="metric reveal">
+          <strong>0.035</strong>
+          <span>clue–rating correlation</span>
+        </div>
+        <div class="metric reveal">
+          <strong>0.12%</strong>
+          <span>variance explained by clues</span>
+        </div>
+        <div class="metric reveal">
+          <strong>43.1%</strong>
+          <span>solved by scanning alone</span>
+        </div>
+      </section>
+
+      <section class="dashboard-section section" id="dashboard">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow">The decision surface</p>
+            <h2>One dashboard, one conclusion.</h2>
+          </div>
+          <p>
+            The Tableau view leads with the decision, then shows why the same clue count can contain
+            very different solving difficulty.
+          </p>
+        </div>
+
+        <button class="dashboard-frame reveal" type="button" data-open-dashboard aria-label="Open the Tableau dashboard screenshot at full size">
+          <img
+            src="/assets/tableau-dashboard-clean.png"
+            alt="Tableau dashboard titled Auditing Sudoku Difficulty, showing four KPIs and charts for difficulty spread, puzzle counts and scanning-only share by clue count."
+          />
+          <span class="frame-action">Open full view ↗</span>
+        </button>
+        <p class="figure-caption">
+          Tableau Desktop workbook · Principal charts show clue counts 21–28, covering 99.98% of the catalogue.
+        </p>
+      </section>
+
+      <section class="story-section section" id="story">
+        <div class="story-card reveal">
+          <p class="eyebrow">The personal starting point</p>
+          <h2>A player’s hunch became a product question.</h2>
+          <p class="story-lead">
+            I had played Sudoku casually for months, and many patterns had become almost automatic.
+            Watching friends struggle with puzzles that felt straightforward made me wonder what a
+            difficulty label was actually measuring.
+          </p>
+          <p>
+            A digital Sudoku product may need to classify thousands—or millions—of boards. If it uses
+            an intuitive shortcut that does not match solving effort, “Easy” and “Hard” become unreliable
+            promises to the player.
+          </p>
+        </div>
+        <aside class="trivia-card reveal" aria-label="Surprising result">
+          <span class="trivia-kicker">The result that broke the shortcut</span>
+          <strong>23 clues</strong>
+          <p>
+            Puzzles with exactly 23 clues range from a <b>0.0</b> solver rating to the dataset maximum of
+            <b>8.5</b>.
+          </p>
+          <span class="trivia-foot">Same clue count. Entirely different solving experience.</span>
+        </aside>
+      </section>
+
+      <section class="evidence-section section" id="evidence">
+        <div class="section-heading narrow reveal">
+          <div>
+            <p class="eyebrow">What the analysis found</p>
+            <h2>Three pieces of evidence changed the decision.</h2>
+          </div>
+        </div>
+
+        <article class="finding reveal">
+          <div class="finding-number">01</div>
+          <div class="finding-copy">
+            <p class="finding-label">Association</p>
+            <h3>More clues do not create a dependable difficulty ladder.</h3>
+            <p>
+              Pearson correlation between clue count and rating is <strong>0.035</strong>; Spearman correlation
+              is <strong>0.041</strong>. Both sit well below the pre-stated 0.10 threshold for a useful relationship.
+            </p>
+          </div>
+          <div class="mini-visual correlation" role="img" aria-label="Clue to difficulty correlation of 0.035 on a scale where 0.10 was the weak-association threshold">
+            <div class="scale-labels"><span>0</span><span>weak threshold</span><span>0.10</span></div>
+            <div class="scale-track"><span style="width: 35.3%"></span><i></i></div>
+            <strong>r = 0.035</strong>
+          </div>
+        </article>
+
+        <article class="finding reveal">
+          <div class="finding-number">02</div>
+          <div class="finding-copy">
+            <p class="finding-label">Within-group variation</p>
+            <h3>Each common clue count still contains a wide spread.</h3>
+            <p>
+              For clue counts 21–28, the central 80% of ratings spans roughly three rating points.
+              Counting givens does not tell a player what reasoning the puzzle will demand.
+            </p>
+          </div>
+          <div class="spread-chart" role="img" aria-label="Central 80 percent difficulty spread ranges from 3.0 to 3.2 rating points across clue counts 21 to 28">
+            <div class="spread-bars" aria-hidden="true">
+              <span style="height: 96%"><i>21</i></span>
+              <span style="height: 93%"><i>22</i></span>
+              <span style="height: 90%"><i>23</i></span>
+              <span style="height: 90%"><i>24</i></span>
+              <span style="height: 90%"><i>25</i></span>
+              <span style="height: 90%"><i>26</i></span>
+              <span style="height: 93%"><i>27</i></span>
+              <span style="height: 96%"><i>28</i></span>
+            </div>
+            <p>≈ 3 rating points of spread</p>
+          </div>
+        </article>
+
+        <article class="finding reveal">
+          <div class="finding-number">03</div>
+          <div class="finding-copy">
+            <p class="finding-label">Prediction</p>
+            <h3>Visible structure barely improves the prediction.</h3>
+            <p>
+              Adding clue balance, position and rotational symmetry raises test R² from
+              <strong>0.0012</strong> to only <strong>0.0069</strong>. The surface still does not contain enough signal.
+            </p>
+          </div>
+          <div class="model-bars" aria-label="Model R-squared comparison">
+            <div>
+              <span>Clues only</span>
+              <div class="model-track"><i style="width: 12%"></i></div>
+              <b>0.0012</b>
+            </div>
+            <div>
+              <span>Surface features</span>
+              <div class="model-track"><i style="width: 69%"></i></div>
+              <b>0.0069</b>
+            </div>
+            <small>Bar scale: 0–0.01 R²</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="decision-section section">
+        <div class="decision-card reveal">
+          <p class="eyebrow">Product recommendation</p>
+          <h2>Stop using clue count as the primary difficulty label.</h2>
+          <p>
+            Use solver-based technique or effort measures to screen and provisionally tier puzzles.
+            Before publishing those tiers, calibrate them against real player behaviour: completion time,
+            hints, errors and abandonment, segmented by demonstrated skill.
+          </p>
+          <div class="decision-flow" aria-label="Recommended difficulty labelling process">
+            <span>Solver complexity</span><b>→</b><span>Provisional tier</span><b>→</b><span>Player validation</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="method-section section" id="method">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow">How the conclusion was reached</p>
+            <h2>Built to withstand the obvious questions.</h2>
+          </div>
+          <p>
+            The analysis separates confirmatory tests from exploration and keeps the boundary between
+            solver difficulty and human experience explicit.
+          </p>
+        </div>
+
+        <ol class="method-grid">
+          <li class="reveal"><span>01</span><h3>Validate</h3><p>Checked missing values, duplicates, grid length, clue counts and solution validity.</p></li>
+          <li class="reveal"><span>02</span><h3>Test</h3><p>Measured Pearson and Spearman association across the complete 3M-row source.</p></li>
+          <li class="reveal"><span>03</span><h3>Engineer</h3><p>Added clue distribution, balance, location and rotational-symmetry features.</p></li>
+          <li class="reveal"><span>04</span><h3>Compare</h3><p>Evaluated clue-only and surface-feature models on an unseen 20,000-row test set.</p></li>
+        </ol>
+
+        <div class="boundary-grid">
+          <div class="boundary-card reveal">
+            <p class="eyebrow">What this supports</p>
+            <h3>A catalogue-classification decision</h3>
+            <p>Whether simple puzzle metadata is sufficient for reliable difficulty labels.</p>
+          </div>
+          <div class="boundary-card boundary-muted reveal">
+            <p class="eyebrow">What it does not prove</p>
+            <h3>Human enjoyment or retention</h3>
+            <p>The source rating comes from an automated solver, not observed player behaviour.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="source-section section">
+        <div class="source-copy reveal">
+          <p class="eyebrow">Source and reproducibility</p>
+          <h2>The evidence is inspectable.</h2>
+          <p>
+            The project uses David Radcliffe’s CC0 dataset of three million Sudoku puzzles. The repository
+            includes the preparation scripts, validation outputs, analytical tables, methodology and Tableau workbook.
+          </p>
+        </div>
+        <div class="source-links reveal">
+          <a href="tableau/Sudoku%20Difficulty%20Audit.twb" download>Download Tableau workbook <span>↗</span></a>
+          <a href="docs/methodology.md">Read methodology <span>↗</span></a>
+          <a href="https://www.kaggle.com/datasets/radcliffe/3-million-sudoku-puzzles-with-ratings" target="_blank" rel="noreferrer">View source dataset <span>↗</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Sudoku Difficulty Audit · Data analysis portfolio project</p>
+      <a href="#top">Back to top ↑</a>
+    </footer>
+
+    <dialog class="dashboard-dialog" aria-label="Tableau dashboard full-size view">
+      <button type="button" data-close-dashboard aria-label="Close full-size dashboard">Close ×</button>
+      <img src="/assets/tableau-dashboard-clean.png" alt="Full-size Tableau dashboard for the Sudoku difficulty audit." />
+    </dialog>
+  </body>
+</html>

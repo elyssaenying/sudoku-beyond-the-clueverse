@@ -1,0 +1,13 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+# Large source archive and extracted raw files
+data/raw/*.zip
+data/raw/*.csv
+
+# Tableau-generated temporary files
+tableau/~*
+tableau/*.tmp
+
