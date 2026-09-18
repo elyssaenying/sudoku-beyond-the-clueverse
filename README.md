@@ -1,10 +1,12 @@
-# Auditing Sudoku Difficulty at Scale
+# Sudoku: Beyond the Clue-Verse
 
-A portfolio data-analysis project testing whether a Sudoku product can use clue count and visible grid structure to assign dependable difficulty labels.
+What three million rated puzzles reveal—and do not reveal—about Sudoku difficulty labels. This portfolio data-analysis project tests whether a Sudoku product can use clue count and visible grid structure to assign dependable difficulty labels.
 
 ## Portfolio site
 
-The repository root contains a dependency-free, responsive case-study website (`index.html`, `styles.css`, and `script.js`). It presents the business question and answer first, then the Tableau dashboard, personal motivation, evidence, recommendation, methodology and limitations. It is ready for a free static deployment such as Vercel Hobby; no paid UI libraries or subscriptions are required.
+The repository root contains a dependency-free, responsive case-study website (`index.html`, `styles.css`, and `script.js`). It presents the business question and answer first, then the Tableau dashboard, personal motivation, evidence, recommendation, methodology and limitations. An optional Earth-42 visual mode is hidden behind the `4`, `2` interaction without changing the analytical content. The site is ready for a free static deployment such as Vercel Hobby; no paid UI libraries or subscriptions are required.
+
+The pre–Clue-Verse website is preserved on the `original-design` branch. After both branches are pushed, it can be viewed from GitHub’s branch selector or restored locally with `git switch original-design`; return to the approved version with `git switch main`.
 
 ## Business question
 

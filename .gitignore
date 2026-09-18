@@ -11,3 +11,5 @@ data/raw/*.csv
 tableau/~*
 tableau/*.tmp
 
+# Local handoff context for future Codex sessions
+PROJECT_CONTEXT.md
