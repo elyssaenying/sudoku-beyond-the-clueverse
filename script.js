@@ -36,7 +36,10 @@ const switchKicker = document.querySelector("[data-switch-kicker]");
 const switchCopy = document.querySelector("[data-switch-copy]");
 const spideySense = document.querySelector(".spidey-sense");
 const webDrop = document.querySelector(".web-drop");
+const clueCodeCells = document.querySelectorAll("[data-clue-code]");
+const sudokuGrid = document.querySelector(".sudoku-grid");
 let keySequence = "";
+let tappedSequence = "";
 let toastTimer;
 let senseTimer;
 let dropTimer;
@@ -83,6 +86,29 @@ const toggleVerseMode = () => {
 };
 
 verseToggle?.addEventListener("click", toggleVerseMode);
+
+const enterClueCode = (digit) => {
+  tappedSequence = (tappedSequence + digit).slice(-2);
+  sudokuGrid?.classList.toggle("is-code-armed", tappedSequence === "4");
+
+  if (tappedSequence === "42") {
+    toggleVerseMode();
+    tappedSequence = "";
+    sudokuGrid?.classList.remove("is-code-armed");
+  } else if (tappedSequence !== "4") {
+    tappedSequence = "";
+  }
+};
+
+clueCodeCells.forEach((cell) => {
+  cell.addEventListener("click", () => enterClueCode(cell.dataset.clueCode));
+  cell.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      enterClueCode(cell.dataset.clueCode);
+    }
+  });
+});
 
 window.addEventListener("keydown", (event) => {
   if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;

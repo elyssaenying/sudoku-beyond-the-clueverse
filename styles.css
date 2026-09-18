@@ -390,6 +390,53 @@ h3 {
   font-size: 1.6rem;
 }
 
+.sudoku-grid .clue-code-cell {
+  position: relative;
+  z-index: 1;
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--amber) 24%, var(--surface));
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--amber) 72%, var(--ink));
+  cursor: pointer;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.sudoku-grid .clue-code-cell:hover,
+.sudoku-grid .clue-code-cell:focus-visible {
+  outline: 0;
+  background: color-mix(in srgb, var(--amber) 42%, var(--surface));
+  box-shadow: inset 0 0 0 3px var(--amber), 0 0 0 2px var(--surface), 0 0 0 4px var(--ink);
+  transform: scale(1.05);
+}
+
+.sudoku-grid.is-code-armed .clue-code-cell[data-clue-code="2"] {
+  animation: clue-nudge 850ms ease-in-out infinite alternate;
+}
+
+.puzzle-discovery-hint {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.puzzle-discovery-hint span {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+@keyframes clue-nudge {
+  from {
+    background: color-mix(in srgb, var(--amber) 24%, var(--surface));
+  }
+  to {
+    background: color-mix(in srgb, var(--amber) 56%, var(--surface));
+  }
+}
+
 .visual-note {
   margin: 18px 0 0;
   color: var(--muted);
