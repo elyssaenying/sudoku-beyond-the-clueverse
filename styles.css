@@ -247,12 +247,6 @@ h3 {
 .chromatic-title {
   position: relative;
   width: fit-content;
-  transition: text-shadow 180ms ease, transform 180ms ease;
-}
-
-.chromatic-title:hover {
-  text-shadow: 3px 0 var(--verse-cyan), -3px 0 var(--verse-magenta);
-  transform: skew(-1.5deg);
 }
 
 .hero-actions {
@@ -1066,6 +1060,7 @@ body.verse-mode {
 .verse-mode .evidence-section,
 .verse-mode .method-section,
 .verse-mode .source-section {
+  padding-inline: clamp(30px, 4vw, 58px);
   background: rgba(255, 250, 244, 0.96);
   box-shadow: inset 0 0 0 2px var(--verse-black), 8px 8px 0 rgba(8, 7, 13, 0.85);
 }
@@ -1530,6 +1525,14 @@ footer a {
   }
 
   .verse-mode .hero {
+    padding-inline: 22px;
+  }
+
+  .verse-mode .dashboard-section,
+  .verse-mode .story-section,
+  .verse-mode .evidence-section,
+  .verse-mode .method-section,
+  .verse-mode .source-section {
     padding-inline: 22px;
   }
 
