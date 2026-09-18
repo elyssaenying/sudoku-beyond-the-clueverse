@@ -594,6 +594,7 @@ h3 {
   justify-content: space-between;
   min-height: 420px;
   padding: clamp(30px, 4vw, 52px);
+  padding-top: clamp(82px, 7vw, 96px);
   background: var(--blue);
   color: white;
 }
@@ -1558,6 +1559,7 @@ footer a {
 
   .trivia-card {
     min-height: 360px;
+    padding-top: 78px;
   }
 
   .finding {
