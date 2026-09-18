@@ -1015,6 +1015,7 @@ body.verse-mode {
 
 .verse-mode .hero {
   position: relative;
+  padding-inline: clamp(30px, 4vw, 58px);
   background:
     radial-gradient(circle at 15% 24%, rgba(255, 224, 88, 0.15) 0 1.5px, transparent 2.5px) 0 0 / 15px 15px,
     linear-gradient(128deg, rgba(8, 7, 13, 0.98) 0 58%, rgba(83, 16, 28, 0.97) 100%);
@@ -1526,6 +1527,10 @@ footer a {
   .hero {
     gap: 52px;
     padding-block: 58px 76px;
+  }
+
+  .verse-mode .hero {
+    padding-inline: 22px;
   }
 
   h1 {
