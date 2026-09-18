@@ -986,6 +986,12 @@ body.verse-mode {
   background-attachment: fixed;
 }
 
+.verse-mode main {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.5vw, 34px);
+}
+
 .verse-mode::before {
   z-index: 0;
   background-image:
@@ -1535,6 +1541,10 @@ footer a {
   .verse-mode .method-section,
   .verse-mode .source-section {
     padding-inline: 22px;
+  }
+
+  .verse-mode main {
+    gap: 18px;
   }
 
   h1 {
