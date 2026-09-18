@@ -2,15 +2,15 @@
 
 ## Personal starting point
 
-I had played Sudoku casually for months, and many patterns had become almost automatic. When I watched friends struggle with puzzles that felt straightforward to me, I began questioning what a difficulty label actually represents. Does a puzzle become harder simply because it has fewer clues, or because of the reasoning needed to progress?
+After years of playing Sudoku, I had picked up enough techniques and tricks to know that fewer clues did not always mean a harder puzzle. I suspected that where the clues were placed mattered more than how many there were. But when friends found puzzles I considered relatively easy just as difficult as the others, I began questioning what difficulty meant and whether it came from the puzzle, the player or both.
 
 ## From observation to product problem
 
-Difficulty labels help players choose an appropriate puzzle, but a digital Sudoku product may need to classify thousands or millions of generated boards. An inconsistent labelling method can place visually similar puzzles into very different solving experiences.
+Difficulty labels help players choose an appropriate puzzle, but a digital Sudoku product may need to classify thousands or millions of generated boards. An inconsistent labelling method can give players unreliable expectations.
 
 The product question is:
 
-> Can a Sudoku app use simple puzzle characteristics to assign dependable difficulty tiers, or should it rely on solver-based complexity measures?
+> Can a Sudoku app use clue count and basic visible structure to assign dependable provisional difficulty tiers, and what evidence should determine the final player-facing labels?
 
 The dashboard audience is a product manager or puzzle-content lead. The end users are Sudoku players selecting a challenge. The project does not invent demographic segments; the available data describes puzzles, not people.
 
@@ -22,7 +22,7 @@ Source: [Difficulty Rating of Sudoku Puzzles: An Overview and Evaluation](https:
 
 ## Analysis narrative
 
-1. Validate three million puzzle records and document the source limitations.
+1. Validate full-source structure, check a deterministic solution sample and document the limits of that validation.
 2. Test whether clue count is associated with the supplied solver rating.
 3. Engineer visible structural features such as row, column and box imbalance and rotational symmetry.
 4. Compare a clue-only model with a broader surface-feature model on unseen data.
@@ -31,5 +31,4 @@ Source: [Difficulty Rating of Sudoku Puzzles: An Overview and Evaluation](https:
 
 ## Responsible conclusion
 
-The supplied rating is produced by an automated solver, not by human players. The analysis can evaluate catalogue classification, but it cannot establish effects on enjoyment, engagement or retention. A production team should validate final tiers using completion time, hint usage, error counts and abandonment by player skill level.
-
+The supplied rating is produced by an automated solver, not by human players. The analysis can evaluate whether simple puzzle metadata is useful for provisional catalogue classification, but it cannot establish human-perceived difficulty or effects on enjoyment, engagement or retention. Use solver complexity only as a cold-start estimate. Once enough gameplay exists, calibrate labels with completion time, hints, mistakes, restarts and abandonment within demonstrated skill groups. Prefer skill-calibrated labels; if one catalogue-wide label is required, combine group-level results using transparent weights that reflect the player base.

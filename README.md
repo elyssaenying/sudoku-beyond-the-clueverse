@@ -8,16 +8,16 @@ The repository root contains a dependency-free, responsive case-study website (`
 
 ## Business question
 
-Can a Sudoku app use simple puzzle characteristics to assign consistent difficulty tiers, or should it rely on solver-based complexity measures?
+Can a Sudoku app use clue count and basic visible structure to assign dependable provisional difficulty tiers, and what evidence should determine the final player-facing labels?
 
 The dashboard is designed for a product manager or puzzle-content lead responsible for difficulty labels and catalogue quality. It does not claim that difficulty causes retention or revenue because the source contains no player-behaviour data.
 
 ## Hypotheses
 
-- **H1 — clue-count hypothesis:** clue count has a weak relationship with the supplied difficulty rating (`|r| < 0.10`).
-- **H2 — surface-feature hypothesis:** clue count, clue distribution and symmetry together have limited out-of-sample predictive power (`R² < 0.10`).
+- **H1 — clue-count usefulness:** clue count has at least a weak practical relationship with the supplied rating (`|r| ≥ 0.10`).
+- **H2 — surface-feature usefulness:** visible grid features explain enough out-of-sample rating variation to support classification (`R² ≥ 0.10`).
 
-These are tested separately from the exploratory questions about catalogue balance, tier boundaries and misleading puzzle layouts.
+Neither hypothesis is supported. The `0.10` cutoffs are project decision rules, not universal statistical standards. They were set before the final dashboard was built and are intentionally lenient: results far below them are not useful for the product decision. Exploratory questions about catalogue balance, provisional rating bands and misleading puzzle layouts are kept separate.
 
 ## Repository structure
 
@@ -41,10 +41,14 @@ python src/prepare_analysis.py
 python src/qa_outputs.py
 ```
 
-The script validates the source, computes full-population summaries, engineers surface features on a deterministic sample and exports the tables used by Tableau.
+The script validates full-source structure and identifiers, checks solution-grid and given-to-solution consistency on a deterministic 50,000-row sample, computes full-population summaries, engineers surface features on a deterministic 100,000-row sample and exports the tables used by Tableau. The diagnostic models use one reproducible 80/20 split, leaving 20,000 rows unseen during fitting.
 
-Open `tableau/Sudoku Difficulty Audit.twb` in Tableau Desktop. Its three charts intentionally show clue counts 21–28, which contain 2,999,482 of the 3,000,000 records (99.98%). The full-population KPIs and statistical tests still use every source row.
+Open `tableau/Sudoku Difficulty Audit.twb` in Tableau Desktop. Its three charts intentionally show clue counts 21–28, which contain 2,999,482 of the 3,000,000 records (99.98%). The full-population KPIs, correlations and grouped summaries use every source row; the surface-feature model uses the documented 100,000-row sample.
 
 ## Data source
 
 David Radcliffe, [3 million Sudoku puzzles with ratings](https://www.kaggle.com/datasets/radcliffe/3-million-sudoku-puzzles-with-ratings), CC0 Public Domain. The supplied rating is based on average automated-solver search-tree depth over ten attempts; it is not observed human solving time.
+
+## Decision
+
+Clue count and the tested surface summaries are not dependable primary labels. Use solver complexity only to provisionally tier new puzzles. Once enough gameplay exists, let completion time, hints, mistakes, restarts and abandonment determine player-facing labels within demonstrated skill groups. If the product requires one catalogue-wide label, combine group-level results using transparent weights that reflect its player base.

@@ -1,5 +1,5 @@
 check,scope,observed_issues,expected_issues,status
-Source archive SHA-256 matches,Full source,1,1,Pass
+Source archive SHA-256 mismatch,Full source,0,0,Pass
 Missing values,Full source,0,0,Pass
 Duplicate IDs,Full source,0,0,Pass
 Duplicate puzzle strings,Full source,0,0,Pass
@@ -7,3 +7,4 @@ Invalid puzzle length or characters,Full source,0,0,Pass
 Invalid solution length or characters,Full source,0,0,Pass
 Reported clue-count mismatches,Full source,0,0,Pass
 Invalid completed solution grids,"Deterministic sample of 50,000",0,0,Pass
+Puzzle givens conflict with supplied solution,"Deterministic sample of 50,000",0,0,Pass

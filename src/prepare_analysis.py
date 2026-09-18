@@ -110,6 +110,14 @@ def main() -> None:
         return all(set(group) == expected for group in rows + columns + boxes)
 
     invalid_sampled_solutions = int((~solution_sample["solution"].map(valid_solution_grid)).sum())
+    sampled_givens_match_solution = solution_sample.apply(
+        lambda row: all(
+            given == "." or given == solved
+            for given, solved in zip(row["puzzle"], row["solution"])
+        ),
+        axis=1,
+    )
+    sampled_givens_mismatches = int((~sampled_givens_match_solution).sum())
 
     pearson = float(data[["clues", "difficulty"]].corr(method="pearson").iloc[0, 1])
     spearman = float(data[["clues", "difficulty"]].corr(method="spearman").iloc[0, 1])
@@ -117,7 +125,7 @@ def main() -> None:
 
     validation = pd.DataFrame(
         [
-            ["Source archive SHA-256 matches", "Full source", int(archive_hash == EXPECTED_SHA256), 1],
+            ["Source archive SHA-256 mismatch", "Full source", int(archive_hash != EXPECTED_SHA256), 0],
             ["Missing values", "Full source", missing_values, 0],
             ["Duplicate IDs", "Full source", duplicate_ids, 0],
             ["Duplicate puzzle strings", "Full source", duplicate_puzzles, 0],
@@ -125,6 +133,7 @@ def main() -> None:
             ["Invalid solution length or characters", "Full source", int((~valid_solution_characters).sum()), 0],
             ["Reported clue-count mismatches", "Full source", clue_count_mismatches, 0],
             ["Invalid completed solution grids", f"Deterministic sample of {len(solution_sample):,}", invalid_sampled_solutions, 0],
+            ["Puzzle givens conflict with supplied solution", f"Deterministic sample of {len(solution_sample):,}", sampled_givens_mismatches, 0],
         ],
         columns=["check", "scope", "observed_issues", "expected_issues"],
     )

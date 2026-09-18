@@ -473,7 +473,7 @@ Are clue counts enough to label three million puzzles?</run>
           <zone h='12000' id='3' type-v2='text' w='25000' x='0' y='8500'>
             <formatted-text>
               <run bold='true' fontcolor='#0052cc' fontsize='22'>3.0M</run>
-              <run fontcolor='#42526e' fontsize='10'>&#10;validated puzzles</run>
+              <run fontcolor='#42526e' fontsize='10'>&#10;records analysed</run>
             </formatted-text>
           </zone>
           <zone h='12000' id='4' type-v2='text' w='25000' x='25000' y='8500'>
@@ -491,7 +491,7 @@ Are clue counts enough to label three million puzzles?</run>
           <zone h='12000' id='6' type-v2='text' w='25000' x='75000' y='8500'>
             <formatted-text>
               <run bold='true' fontcolor='#0052cc' fontsize='22'>2.2%</run>
-              <run fontcolor='#42526e' fontsize='10'>&#10;expert-rated puzzles</run>
+              <run fontcolor='#42526e' fontsize='10'>&#10;rating above 4.0</run>
             </formatted-text>
           </zone>
           <zone h='51500' id='7' name='Difficulty spread by clues' w='63000' x='0' y='20500' />
@@ -499,15 +499,15 @@ Are clue counts enough to label three million puzzles?</run>
           <zone h='25000' id='9' name='Scanning-only share' w='37000' x='63000' y='47000' />
           <zone h='16500' id='10' type-v2='text' w='100000' x='0' y='72000'>
             <formatted-text>
-              <run bold='true' fontcolor='#172b4d' fontsize='12'>Decision: stop using clue count as a difficulty label.</run>
+              <run bold='true' fontcolor='#172b4d' fontsize='12'>Decision: stop using clue count as the primary difficulty label.</run>
               <run fontcolor='#42526e' fontsize='10'>
-Use solving-technique or solver-effort signals for difficulty; keep clue count only as a weak descriptive feature. The clue-only model explains 0.12% of rating variance, while all visible surface features together explain just 0.69%.</run>
+Use solver complexity for provisional tiers, then calibrate labels with player behaviour. The clue-count model explains 0.12% of test-set rating variation; a separate linear surface-feature model explains 0.69%.</run>
             </formatted-text>
           </zone>
           <zone h='11500' id='11' type-v2='text' w='100000' x='0' y='88500'>
             <formatted-text>
               <run bold='true' fontcolor='#5e6c84' fontsize='9'>Interpretation guardrail: </run>
-              <run fontcolor='#5e6c84' fontsize='9'>rating 0.0 means “scanning only” in this source, not universally easy. Charts show clue counts 21–28 (2,999,482 puzzles); the 518 sparse-tail records remain in the full analysis but are excluded from the visual comparison.</run>
+              <run fontcolor='#5e6c84' fontsize='9'>rating 0.0 means “scanning only” in this source, not universally easy; 2.2% is the analysis-defined rating-above-4.0 tail. Charts show clue counts 21–28 (2,999,482 puzzles); 518 sparse-tail records remain outside the visual comparison.</run>
             </formatted-text>
           </zone>
         </zone>

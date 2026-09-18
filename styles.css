@@ -134,6 +134,10 @@ nav .nav-cta {
   margin-inline: auto;
 }
 
+.section[id] {
+  scroll-margin-top: 84px;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.82fr);
@@ -320,7 +324,7 @@ h3 {
   border-bottom: 1px solid var(--line-strong);
   color: var(--ink);
   font-family: var(--mono);
-  font-size: clamp(0.8rem, 1.5vw, 1.15rem);
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
   font-weight: 700;
 }
 
@@ -552,8 +556,35 @@ h3 {
   border-top: 1px solid var(--line);
 }
 
-.finding:last-child {
+.finding:last-of-type {
   border-bottom: 1px solid var(--line);
+}
+
+.analysis-reflection {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(32px, 6vw, 88px);
+  padding: clamp(36px, 6vw, 64px);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.analysis-reflection h3 {
+  max-width: 360px;
+  margin-top: 10px;
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.analysis-reflection p:not(.eyebrow) {
+  max-width: 710px;
+  color: var(--muted);
+}
+
+.analysis-reflection p:last-child {
+  margin-bottom: 0;
 }
 
 .finding-number {
@@ -909,6 +940,7 @@ footer a {
 
   .section-heading,
   .story-section,
+  .analysis-reflection,
   .source-section {
     grid-template-columns: 1fr;
   }
