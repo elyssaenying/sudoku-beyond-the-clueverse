@@ -36,8 +36,30 @@ const switchKicker = document.querySelector("[data-switch-kicker]");
 const switchCopy = document.querySelector("[data-switch-copy]");
 const spideySense = document.querySelector(".spidey-sense");
 const webDrop = document.querySelector(".web-drop");
-const clueCodeCells = document.querySelectorAll("[data-clue-code]");
 const sudokuGrid = document.querySelector(".sudoku-grid");
+const puzzleStatus = document.querySelector(".puzzle-status");
+const restartPuzzle = document.querySelector("[data-restart-puzzle]");
+const puzzleInputs = [];
+
+if (sudokuGrid?.dataset.solution?.length === 81) {
+  [...sudokuGrid.children].forEach((cell, index) => {
+    if (cell.textContent.trim()) return;
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.inputMode = "numeric";
+    input.maxLength = 1;
+    input.autocomplete = "off";
+    input.spellcheck = false;
+    input.className = "sudoku-input";
+    input.dataset.answer = sudokuGrid.dataset.solution[index];
+    input.setAttribute("aria-label", `Sudoku row ${Math.floor(index / 9) + 1}, column ${(index % 9) + 1}`);
+    cell.replaceWith(input);
+    puzzleInputs.push(input);
+  });
+}
+
+const clueCodeCells = document.querySelectorAll("[data-clue-code]");
 let keySequence = "";
 let tappedSequence = "";
 let toastTimer;
@@ -54,8 +76,8 @@ const toggleVerseMode = () => {
   if (switchKicker && switchCopy) {
     switchKicker.textContent = active ? "Dimension 42" : "Spidey sense?";
     switchCopy.textContent = active
-      ? "Tingles detected. Press 4, then 2 — or tap to return."
-      : "Feeling a tingle? Press 4, then 2 — or tap.";
+      ? "Tingles detected. Press 4, then 2, or tap to return."
+      : "Feeling a tingle? Press 4, then 2, or tap.";
   }
 
   if (spideySense) {
@@ -86,6 +108,66 @@ const toggleVerseMode = () => {
 };
 
 verseToggle?.addEventListener("click", toggleVerseMode);
+
+const updatePuzzleProgress = () => {
+  const correctCount = puzzleInputs.filter((input) => input.value === input.dataset.answer).length;
+
+  if (correctCount === puzzleInputs.length && puzzleInputs.length > 0) {
+    sudokuGrid?.classList.add("is-solved");
+    puzzleStatus.textContent = "Solved! Every entry is correct.";
+    restartPuzzle.textContent = "Play again";
+    return;
+  }
+
+  sudokuGrid?.classList.remove("is-solved");
+  puzzleStatus.textContent = `${correctCount} of ${puzzleInputs.length} empty cells completed correctly.`;
+  restartPuzzle.textContent = "Restart";
+};
+
+puzzleInputs.forEach((input, inputIndex) => {
+  input.addEventListener("input", () => {
+    const digit = input.value.replace(/[^1-9]/g, "").slice(-1);
+    input.value = digit;
+    input.classList.remove("is-wrong", "is-correct");
+    input.setAttribute("aria-invalid", "false");
+
+    if (!digit) {
+      updatePuzzleProgress();
+      return;
+    }
+
+    if (digit !== input.dataset.answer) {
+      input.classList.add("is-wrong");
+      input.setAttribute("aria-invalid", "true");
+      puzzleStatus.textContent = "That number is not correct for this cell. Try again.";
+      return;
+    }
+
+    input.classList.add("is-correct");
+    updatePuzzleProgress();
+
+    const nextEmptyInput = puzzleInputs.slice(inputIndex + 1).find((candidate) => !candidate.value);
+    nextEmptyInput?.focus();
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if ((event.key === "Backspace" || event.key === "Delete") && !input.value) {
+      puzzleInputs[inputIndex - 1]?.focus();
+    }
+  });
+});
+
+restartPuzzle?.addEventListener("click", () => {
+  puzzleInputs.forEach((input) => {
+    input.value = "";
+    input.classList.remove("is-wrong", "is-correct");
+    input.setAttribute("aria-invalid", "false");
+  });
+  sudokuGrid?.classList.remove("is-solved");
+  puzzleStatus.textContent = "Puzzle restarted. Fill the empty cells to try again.";
+  restartPuzzle.textContent = "Restart";
+  puzzleInputs[0]?.focus();
+});
 
 const enterClueCode = (digit) => {
   tappedSequence = (tappedSequence + digit).slice(-2);

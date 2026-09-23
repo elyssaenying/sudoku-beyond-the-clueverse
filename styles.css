@@ -349,32 +349,75 @@ h3 {
   aspect-ratio: 1;
 }
 
+.sudoku-grid > * {
+  border: 0;
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+
 .sudoku-grid span {
   display: grid;
   place-items: center;
-  border-right: 1px solid var(--line-strong);
-  border-bottom: 1px solid var(--line-strong);
   color: var(--ink);
   font-family: var(--mono);
   font-size: clamp(0.95rem, 1.8vw, 1.35rem);
   font-weight: 700;
 }
 
-.sudoku-grid span:nth-child(3n) {
+.sudoku-grid input {
+  width: 100%;
+  min-width: 0;
+  border-radius: 0;
+  outline: 0;
+  background: rgba(9, 97, 201, 0.025);
+  color: var(--blue-deep);
+  font-family: var(--mono);
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+  font-weight: 750;
+  line-height: 1;
+  text-align: center;
+  caret-color: var(--blue);
+  appearance: none;
+  transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+
+.sudoku-grid input:focus {
+  position: relative;
+  z-index: 2;
+  background: var(--blue-soft);
+  box-shadow: inset 0 0 0 2px var(--blue);
+}
+
+.sudoku-grid input.is-wrong {
+  background: #ffe2e3;
+  color: #b31629;
+  box-shadow: inset 0 0 0 2px #d6293d;
+}
+
+.sudoku-grid input.is-correct {
+  color: var(--blue-deep);
+}
+
+.sudoku-grid > :nth-child(3n) {
   border-right: 2px solid var(--ink);
 }
 
-.sudoku-grid span:nth-child(9n) {
+.sudoku-grid > :nth-child(9n) {
   border-right: 0;
 }
 
-.sudoku-grid span:nth-child(n + 19):nth-child(-n + 27),
-.sudoku-grid span:nth-child(n + 46):nth-child(-n + 54) {
+.sudoku-grid > :nth-child(n + 19):nth-child(-n + 27),
+.sudoku-grid > :nth-child(n + 46):nth-child(-n + 54) {
   border-bottom: 2px solid var(--ink);
 }
 
-.sudoku-grid span:nth-child(n + 73) {
+.sudoku-grid > :nth-child(n + 73) {
   border-bottom: 0;
+}
+
+.sudoku-grid.is-solved {
+  border-color: #1f9d63;
+  box-shadow: 0 0 0 4px rgba(31, 157, 99, 0.22);
 }
 
 .sudoku-grid .focus-cell {
@@ -404,6 +447,40 @@ h3 {
 
 .sudoku-grid.is-code-armed .clue-code-cell[data-clue-code="2"] {
   animation: clue-nudge 850ms ease-in-out infinite alternate;
+}
+
+.puzzle-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.puzzle-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+.puzzle-restart {
+  flex: 0 0 auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  padding: 7px 10px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.puzzle-restart:hover,
+.puzzle-restart:focus-visible {
+  border-color: var(--blue);
+  color: var(--blue-deep);
 }
 
 .puzzle-discovery-hint {
@@ -980,10 +1057,11 @@ h3 {
 
 body.verse-mode {
   background:
-    radial-gradient(circle at 14% 9%, rgba(188, 26, 43, 0.18) 0 2%, transparent 15%),
-    radial-gradient(circle at 86% 17%, rgba(18, 32, 51, 0.12) 0 2%, transparent 18%),
-    linear-gradient(135deg, #f8f0e8 0%, #f1e2d8 58%, #e7d9d3 100%);
+    radial-gradient(circle at 14% 9%, rgba(188, 26, 43, 0.22) 0 2%, transparent 19%),
+    radial-gradient(circle at 86% 17%, rgba(40, 70, 255, 0.11) 0 2%, transparent 22%),
+    linear-gradient(135deg, #08070d 0%, #130c12 58%, #220d17 100%);
   background-attachment: fixed;
+  color: #f7f1e8;
 }
 
 .verse-mode main {
@@ -995,10 +1073,10 @@ body.verse-mode {
 .verse-mode::before {
   z-index: 0;
   background-image:
-    radial-gradient(circle, rgba(8, 7, 13, 0.22) 1.1px, transparent 1.65px),
+    radial-gradient(circle, rgba(255, 224, 88, 0.16) 1.1px, transparent 1.65px),
     linear-gradient(112deg, transparent 45%, rgba(255, 255, 255, 0.13) 46% 47%, transparent 48%);
   background-size: 10px 10px, 94px 94px;
-  opacity: 0.2;
+  opacity: 0.34;
 }
 
 .verse-mode .site-header {
@@ -1058,8 +1136,10 @@ body.verse-mode {
 }
 
 .verse-mode .hero-visual {
-  background: #fff8ef;
-  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: #15131a;
+  color: #f7f1e8;
+  box-shadow: 14px 14px 0 rgba(188, 26, 43, 0.4);
 }
 
 .verse-mode .dashboard-section,
@@ -1068,8 +1148,11 @@ body.verse-mode {
 .verse-mode .method-section,
 .verse-mode .source-section {
   padding-inline: clamp(30px, 4vw, 58px);
-  background: rgba(255, 250, 244, 0.96);
-  box-shadow: inset 0 0 0 2px var(--verse-black), 8px 8px 0 rgba(8, 7, 13, 0.85);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 224, 88, 0.06) 0 1.5px, transparent 2.2px) 0 0 / 14px 14px,
+    rgba(15, 13, 19, 0.97);
+  color: #f7f1e8;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 8px 8px 0 rgba(0, 0, 0, 0.72);
 }
 
 .verse-mode .metric-band,
@@ -1081,7 +1164,77 @@ body.verse-mode {
 }
 
 .verse-mode .sudoku-grid {
+  border-color: #f3ede5;
   box-shadow: none;
+}
+
+.verse-mode .sudoku-grid.is-solved {
+  border-color: #53d88a;
+  box-shadow: 0 0 0 4px rgba(83, 216, 138, 0.24);
+}
+
+.verse-mode .sudoku-grid > * {
+  border-color: rgba(243, 237, 229, 0.28);
+}
+
+.verse-mode .sudoku-grid > :nth-child(3n) {
+  border-right-color: #f3ede5;
+}
+
+.verse-mode .sudoku-grid > :nth-child(9n) {
+  border-right: 0;
+}
+
+.verse-mode .sudoku-grid > :nth-child(n + 19):nth-child(-n + 27),
+.verse-mode .sudoku-grid > :nth-child(n + 46):nth-child(-n + 54) {
+  border-bottom-color: #f3ede5;
+}
+
+.verse-mode .sudoku-grid span,
+.verse-mode .sudoku-grid input {
+  color: #f7f1e8;
+}
+
+.verse-mode .sudoku-grid input {
+  background: rgba(255, 255, 255, 0.035);
+  caret-color: var(--verse-yellow);
+}
+
+.verse-mode .sudoku-grid input:focus {
+  background: rgba(255, 224, 88, 0.13);
+  box-shadow: inset 0 0 0 2px var(--verse-yellow);
+}
+
+.verse-mode .sudoku-grid input.is-wrong {
+  background: rgba(255, 38, 59, 0.2);
+  color: #ff8895;
+  box-shadow: inset 0 0 0 2px var(--verse-red);
+}
+
+.verse-mode .sudoku-grid input.is-correct {
+  color: #f7f1e8;
+}
+
+.verse-mode .sudoku-grid .clue-code-cell {
+  color: #161019;
+}
+
+.verse-mode .grid-caption,
+.verse-mode .visual-note,
+.verse-mode .puzzle-status,
+.verse-mode .puzzle-discovery-hint {
+  color: #c9c0cd;
+}
+
+.verse-mode .puzzle-restart {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #f7f1e8;
+}
+
+.verse-mode .puzzle-restart:hover,
+.verse-mode .puzzle-restart:focus-visible {
+  border-color: var(--verse-yellow);
+  color: var(--verse-yellow);
 }
 
 .verse-mode .trivia-card {
@@ -1092,8 +1245,12 @@ body.verse-mode {
 }
 
 .verse-mode .comic-panel {
-  border-color: var(--verse-black);
-  box-shadow: 8px 8px 0 rgba(8, 7, 13, 0.82);
+  border-color: rgba(255, 255, 255, 0.23);
+  background:
+    radial-gradient(circle at 92% 14%, rgba(0, 229, 255, 0.1) 0 2px, transparent 2.5px) 0 0 / 10px 10px,
+    #17141b;
+  color: #f7f1e8;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.72);
 }
 
 .verse-mode .finding-number,
@@ -1105,6 +1262,76 @@ body.verse-mode {
 .verse-mode .decision-card {
   background: #130f12;
   box-shadow: inset 0 0 0 3px var(--verse-yellow), 8px 8px 0 rgba(8, 7, 13, 0.82);
+}
+
+.verse-mode .section-heading > p,
+.verse-mode .figure-caption,
+.verse-mode .story-card p:not(.eyebrow),
+.verse-mode .finding-copy p:last-child,
+.verse-mode .analysis-reflection p:not(.eyebrow),
+.verse-mode .method-grid p,
+.verse-mode .boundary-card p:last-child,
+.verse-mode .source-copy p:last-child,
+.verse-mode .scale-labels,
+.verse-mode .spread-bars i,
+.verse-mode .spread-chart p,
+.verse-mode .model-bars small {
+  color: #bdb4c3;
+}
+
+.verse-mode .story-card,
+.verse-mode .analysis-reflection {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: #17141b;
+  color: #f7f1e8;
+}
+
+.verse-mode .story-card .story-lead {
+  color: #f7f1e8;
+}
+
+.verse-mode .mini-visual,
+.verse-mode .spread-chart,
+.verse-mode .model-bars {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #0d0c12;
+  color: #f7f1e8;
+}
+
+.verse-mode .scale-track,
+.verse-mode .model-track {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.verse-mode .method-grid {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.verse-mode .method-grid li {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: #17141b;
+  color: #f7f1e8;
+}
+
+.verse-mode .boundary-card {
+  border-color: rgba(240, 74, 74, 0.55);
+  background: #21151a;
+  color: #f7f1e8;
+}
+
+.verse-mode .boundary-muted {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: #121117;
+}
+
+.verse-mode .source-links,
+.verse-mode .source-links a {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.verse-mode .frame-action {
+  background: #130f12;
+  color: #f7f1e8;
 }
 
 .verse-mode .skill-universes article {

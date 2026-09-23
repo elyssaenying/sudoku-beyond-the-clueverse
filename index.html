@@ -8,7 +8,7 @@
       content="A data-analysis case study testing whether clue count can reliably label Sudoku difficulty across three million puzzles."
     />
     <meta name="theme-color" content="#f4f1e9" />
-    <title>Sudoku: Beyond the Clue-Verse — Data Analysis Case Study</title>
+    <title>Sudoku: Beyond the Clue-Verse | Data Analysis Case Study</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/styles.css?v=20260918" />
     <script src="/script.js?v=20260918" defer></script>
@@ -37,7 +37,7 @@
           <h1>Can you judge a Sudoku by its <em>clues?</em></h1>
           <div class="answer-block">
             <p class="answer-label">Short answer</p>
-            <p class="answer chromatic-title" data-text="No—not reliably.">No—not reliably.</p>
+            <p class="answer chromatic-title" data-text="No, not reliably.">No, not reliably.</p>
             <p>
               Clue count is almost unrelated to the supplied solver difficulty. A product using it as
               the main labelling rule would give players inconsistent expectations.
@@ -65,7 +65,12 @@
             <span>≠</span>
             <span>solver rating</span>
           </div>
-          <div class="sudoku-grid" aria-label="Sudoku puzzle with the adjacent centre clues 4 and 2 highlighted as an interactive sequence">
+          <div
+            class="sudoku-grid"
+            role="grid"
+            data-solution="954713682762485913183926475529178346831642759647359128216894537498537261375261894"
+            aria-label="Playable 23-clue Sudoku puzzle with the adjacent centre clues 4 and 2 highlighted"
+          >
             <span></span><span></span><span>4</span><span></span><span></span><span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span>4</span><span></span><span></span><span>9</span><span>1</span><span></span>
             <span></span><span>8</span><span></span><span></span><span>2</span><span>6</span><span></span><span></span><span></span>
@@ -73,8 +78,12 @@
             <span></span><span></span><span></span><span></span><span class="clue-code-cell" data-clue-code="4" tabindex="0" role="button" aria-label="Highlighted clue 4, first part of a hidden sequence">4</span><span class="clue-code-cell" data-clue-code="2" tabindex="0" role="button" aria-label="Highlighted clue 2, second part of a hidden sequence">2</span><span>7</span><span></span><span></span>
             <span></span><span></span><span></span><span>3</span><span></span><span></span><span></span><span>2</span><span></span>
             <span>2</span><span></span><span>6</span><span></span><span></span><span></span><span></span><span></span><span>7</span>
-            <span></span><span></span><span></span><span></span><span>7</span><span></span><span></span><span></span><span>3</span>
-            <span></span><span></span><span></span><span>6</span><span></span><span>8</span><span></span><span>4</span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span>7</span><span></span><span></span><span></span>
+            <span>3</span><span></span><span></span><span></span><span>6</span><span></span><span>8</span><span></span><span>4</span>
+          </div>
+          <div class="puzzle-controls">
+            <p class="puzzle-status" role="status" aria-live="polite">Fill the empty cells. Incorrect entries will be highlighted.</p>
+            <button class="puzzle-restart" type="button" data-restart-puzzle>Restart</button>
           </div>
           <p class="puzzle-discovery-hint">
             <span aria-hidden="true">⌁</span>
@@ -140,7 +149,7 @@
             actually meant, and whether it came from the puzzle, the player or both.
           </p>
           <p>
-            A digital Sudoku product may need to classify thousands—or millions—of boards. If it uses
+            A digital Sudoku product may need to classify thousands, or even millions, of boards. If it uses
             an intuitive shortcut that does not match solving effort, “Easy” and “Hard” become unreliable
             promises to the player.
           </p>
@@ -368,7 +377,7 @@
     </div>
     <button class="draft-switch" type="button" data-verse-toggle aria-pressed="false">
       <span data-switch-kicker>Spidey sense?</span>
-      <b data-switch-copy>Feeling a tingle? Press 4, then 2 — or tap.</b>
+      <b data-switch-copy>Feeling a tingle? Press 4, then 2, or tap.</b>
     </button>
     <div class="verse-toast" role="status" aria-live="polite">Earth-42 mode activated</div>
   </body>
