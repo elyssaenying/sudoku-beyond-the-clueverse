@@ -12,6 +12,7 @@
     "dashboard_kpis.csv",
     "difficulty_heatmap.csv",
     "feature_correlations.csv",
+    "hero_puzzle.csv",
     "model_comparison.csv",
     "structural_sample.csv",
     "tier_summary.csv",

@@ -1,3 +1,4 @@
+from html.parser import HTMLParser
 from pathlib import Path
 
 import pandas as pd
@@ -10,7 +11,48 @@ TABLEAU_DATA = ROOT / "tableau" / "Data" / "sudoku" / "clue_difficulty_summary.c
 EXPECTED_ROWS = 3_000_000
 EXPECTED_SAMPLE_ROWS = 100_000
 EXPECTED_DASHBOARD_ROWS = 2_999_482
-HERO_PUZZLE_ID = 402_902
+HERO_PUZZLE_ID = 2_760_549
+
+
+class WebsitePuzzleParser(HTMLParser):
+    """Read the displayed starting clues, answer and caption from the website."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.in_grid = False
+        self.in_cell = False
+        self.in_note = False
+        self.cell_text = ""
+        self.cells: list[str] = []
+        self.solution = ""
+        self.notes: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+        classes = (attributes.get("class") or "").split()
+        if tag == "div" and "sudoku-grid" in classes:
+            self.in_grid = True
+            self.solution = attributes.get("data-solution") or ""
+        elif self.in_grid and tag == "span":
+            self.in_cell = True
+            self.cell_text = ""
+        elif tag == "p" and "visual-note" in classes:
+            self.in_note = True
+
+    def handle_data(self, data: str) -> None:
+        if self.in_cell:
+            self.cell_text += data
+        if self.in_note:
+            self.notes.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.in_grid and tag == "span":
+            self.cells.append(self.cell_text.strip() or ".")
+            self.in_cell = False
+        elif self.in_grid and tag == "div":
+            self.in_grid = False
+        elif self.in_note and tag == "p":
+            self.in_note = False
 
 
 def count_solutions(puzzle: str, limit: int = 2) -> int:
@@ -75,7 +117,7 @@ def main() -> None:
     sample = pd.read_csv(DATA / "structural_sample.csv")
     models = pd.read_csv(DATA / "model_comparison.csv")
     kpis = pd.read_csv(DATA / "dashboard_kpis.csv")
-    anomalies = pd.read_csv(DATA / "anomaly_examples.csv")
+    hero_records = pd.read_csv(DATA / "hero_puzzle.csv")
     tableau_data = pd.read_csv(TABLEAU_DATA)
 
     assert validation["status"].eq("Pass").all(), "At least one source validation check requires review."
@@ -117,16 +159,25 @@ def main() -> None:
         atol=1e-7,
     )
 
-    hero = anomalies.loc[anomalies["id"] == HERO_PUZZLE_ID]
+    hero = hero_records.loc[hero_records["id"] == HERO_PUZZLE_ID]
     assert len(hero) == 1
     hero = hero.iloc[0]
-    assert int(hero["clues"]) == 23 and float(hero["difficulty"]) == 8.5
+    assert int(hero["clues"]) == 23 and float(hero["difficulty"]) == 6.8
+    website = WebsitePuzzleParser()
+    website.feed((ROOT / "index.html").read_text(encoding="utf-8"))
+    assert len(website.cells) == 81, "The website grid must contain 81 cells."
+    assert "".join(website.cells) == hero["puzzle"], "The website starting clues do not match the source puzzle."
+    assert website.solution == hero["solution"], "The playable website answer does not match the source solution."
+    caption = " ".join(website.notes)
+    assert f"ID {HERO_PUZZLE_ID}" in caption and "23 clues" in caption and "computer rating 6.8" in caption
+    assert len(hero["solution"]) == 81 and count_solutions(hero["solution"]) == 1
     assert all(given == "." or given == solved for given, solved in zip(hero["puzzle"], hero["solution"]))
     assert count_solutions(hero["puzzle"]) == 1
 
     print(
         "QA passed: source totals reconcile, Tableau data matches the processed source, "
-        "hypothesis metrics agree across outputs, and the displayed hero puzzle has one solution."
+        "hypothesis metrics agree across outputs, and the website puzzle and answer match "
+        "source record 2760549 with exactly one solution."
     )
 
 

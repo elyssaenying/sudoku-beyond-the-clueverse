@@ -2,7 +2,7 @@
 
 ## Hypothesis results
 
-### H1: clue count is practically useful — not supported
+### H1: clue count is practically useful, not supported
 
 - Pearson correlation: `0.0353`
 - Spearman correlation: `0.0409`
@@ -10,7 +10,7 @@
 
 Clue count does not provide a useful ordering of the supplied solver rating. The direction is slightly positive in this generated catalogue, contradicting the common assumption that fewer clues automatically means a harder puzzle. With three million rows this small association may be statistically detectable, but its magnitude is too small to support the product decision.
 
-### H2: visible surface features support dependable classification — not supported
+### H2: the tested layout model meets the project's usefulness cutoff, not supported
 
 Performance on a deterministic 20,000-row test set:
 
@@ -20,6 +20,8 @@ Performance on a deterministic 20,000-row test set:
 | Visible surface features | 1.0840 | 1.2668 | 0.0069 |
 
 These are separate diagnostic specifications rather than a nested incremental test. The clue-only model uses clue-count categories. The surface model uses clue count plus standardised summaries of distribution, basic location, balance and symmetry. Both remain far below the project’s `R² ≥ 0.10` usefulness threshold, so the absolute conclusion does not depend on treating the difference between them as a causal improvement.
+
+In plain English: the two tested prediction rules explained very little of the differences in computer ratings. The 0.69% result applies to clue count and the tested layout measurements together, not clue position alone. These percentages are not prediction accuracy scores.
 
 ## Exploratory findings
 
@@ -36,3 +38,5 @@ Use solver complexity to give new puzzles a provisional difficulty tier, but let
 ## Evidence boundary
 
 The source rating reflects automated solver search-tree depth. It is not a direct measurement of human-perceived difficulty, enjoyment, engagement or retention. The surface model tests summary features rather than every exact clue arrangement or named solving technique. The project supports a provisional catalogue-classification decision and a human-data measurement plan; it does not claim business impact that the data cannot establish.
+
+The results apply to this source collection and these model specifications. No nonlinear models or repeated train/test splits were tested. This analysis does not establish that every use of clue position would fail, or that the results hold for other Sudoku collections. The proposal to collect player data remains future work.

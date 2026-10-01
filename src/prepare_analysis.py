@@ -17,6 +17,7 @@ RANDOM_SEED = 20260917
 SAMPLE_SIZE = 100_000
 DASHBOARD_CLUE_MIN = 21
 DASHBOARD_CLUE_MAX = 28
+HERO_PUZZLE_ID = 2_760_549
 
 
 def file_sha256(path: Path) -> str:
@@ -139,6 +140,11 @@ def main() -> None:
     )
     validation["status"] = np.where(validation["observed_issues"] == validation["expected_issues"], "Pass", "Review")
     validation.to_csv(OUTPUT_DIR / "validation_summary.csv", index=False)
+
+    hero = data.loc[data["id"] == HERO_PUZZLE_ID, ["id", "puzzle", "solution", "clues", "difficulty"]]
+    if len(hero) != 1:
+        raise ValueError("The website puzzle must match exactly one source record.")
+    hero.to_csv(OUTPUT_DIR / "hero_puzzle.csv", index=False)
 
     grouped = data.groupby("clues", observed=True)["difficulty"]
     clue_summary = grouped.agg(

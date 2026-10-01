@@ -634,6 +634,26 @@ h3 {
   font-size: 0.69rem;
 }
 
+.chart-guide {
+  margin-top: 20px;
+  padding: 18px 22px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.chart-guide summary {
+  color: var(--ink);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.chart-guide p {
+  max-width: 850px;
+  margin: 16px 0 0;
+}
+
 .story-section {
   display: grid;
   grid-template-columns: 1.25fr 0.75fr;
@@ -1292,10 +1312,19 @@ body.verse-mode {
 
 .verse-mode .mini-visual,
 .verse-mode .spread-chart,
-.verse-mode .model-bars {
+.verse-mode .model-bars,
+.verse-mode .chart-guide {
   border-color: rgba(255, 255, 255, 0.2);
   background: #0d0c12;
   color: #f7f1e8;
+}
+
+.verse-mode .chart-guide summary {
+  color: #f7f1e8;
+}
+
+.verse-mode .chart-guide p {
+  color: #bdb4c3;
 }
 
 .verse-mode .scale-track,

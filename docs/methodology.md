@@ -16,16 +16,18 @@ The thresholds below are project decision rules declared before the final dashbo
 
 ### H2: surface-feature hypothesis
 
-- Product hypothesis: basic visible structure explains enough rating variation to support classification.
+- Product hypothesis: the tested linear model combining clue count and basic layout summaries explains enough rating variation to meet the project's usefulness cutoff.
 - Baseline: an out-of-sample model using clue-count categories, allowing a different average rating for each observed clue count.
 - Comparison: a separate out-of-sample linear model using numeric clue count plus standardised summaries of row, column, box and digit balance, rotational symmetry, minimum clues by region and basic centre, corner and edge location.
 - Project criterion: `R² ≥ 0.10` is the minimum project threshold for potential usefulness.
 
 Surface features are engineered on a deterministic random sample of 100,000 puzzles. A seeded 80/20 split fits each model on 80,000 rows and evaluates it on the same unseen 20,000-row test set. The models are separate diagnostic specifications, not a nested feature-ablation or production machine-learning system. Their purpose is to test whether either visible-metadata specification contains sufficient signal. One split is adequate for this large gap from the decision threshold, but production modelling would require repeated validation and additional technique-level features.
 
+The poor performance of these models does not prove that all information in clue positions is useless. Exact clue arrangements, solving-technique features and nonlinear prediction methods were not tested. The results describe this source collection and do not establish performance on other Sudoku datasets. R² measures explained rating variation, not the percentage of correctly classified puzzles; no difficulty-classification accuracy was measured.
+
 ## Data validation
 
-The source archive hash, row-level missingness, duplicate IDs and puzzles, string formats and reported clue counts are checked across all 3,000,000 rows. Completed solution grids and agreement between each puzzle’s givens and supplied solution are checked on a deterministic 50,000-row sample. This is a scoped source-quality audit, not proof that every puzzle has exactly one solution. The displayed 23-clue hero puzzle is checked separately and has exactly one solution matching the supplied solution.
+The source archive hash, row-level missingness, duplicate IDs and puzzles, string formats and reported clue counts are checked across all 3,000,000 rows. Completed solution grids and agreement between each puzzle’s givens and supplied solution are checked on a deterministic 50,000-row sample. This is a scoped source-quality audit, not proof that every puzzle has exactly one solution. The displayed 23-clue hero puzzle, ID 2760549 with rating 6.8, is exported directly from the source to `data/processed/hero_puzzle.csv`. QA reads the actual website grid and compares its starting clues, answer and caption with that record. It also checks the supplied solution and verifies that the puzzle has exactly one solution.
 
 ## Exploratory questions
 

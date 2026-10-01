@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="A data-analysis case study testing whether clue count can reliably label Sudoku difficulty across three million puzzles."
+      content="An analysis of three million Sudoku puzzles, testing how much starting numbers and basic clue layout tell us about computer-rated difficulty."
     />
     <meta name="theme-color" content="#f4f1e9" />
     <title>Sudoku: Beyond the Clue-Verse | Data Analysis Case Study</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/styles.css?v=20260923" />
-    <script src="/script.js?v=20260923" defer></script>
+    <link rel="stylesheet" href="/styles.css?v=20261001" />
+    <script src="/script.js?v=20261001" defer></script>
     <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
   </head>
   <body>
@@ -39,8 +39,9 @@
             <p class="answer-label">Short answer</p>
             <p class="answer chromatic-title" data-text="No, not reliably.">No, not reliably.</p>
             <p>
-              Clue count is almost unrelated to the supplied solver difficulty. A product using it as
-              the main labelling rule would give players inconsistent expectations.
+              The numbers already filled in are called clues. Across these three million puzzles,
+              their count tells us very little about the difficulty rated by a computer solver.
+              Counting clues is a poor basis for calling a puzzle “Easy” or “Hard”.
             </p>
           </div>
           <div class="hero-actions">
@@ -49,21 +50,21 @@
           </div>
           <dl class="audience-note">
             <div>
-              <dt>Decision owner</dt>
-              <dd>Sudoku product or puzzle-content lead</dd>
+              <dt>Who this helps</dt>
+              <dd>People choosing difficulty labels for a Sudoku app</dd>
             </div>
             <div>
               <dt>Decision</dt>
-              <dd>How to assign difficulty at catalogue scale</dd>
+              <dd>How to label a large collection of puzzles</dd>
             </div>
           </dl>
         </div>
 
-        <div class="hero-visual portal-card reveal" data-universe="42" aria-label="Real 23-clue Sudoku puzzle from the analysed dataset with solver rating 6.8">
+        <div class="hero-visual portal-card reveal" data-universe="42" aria-label="Playable puzzle from the data with 23 starting clues and a computer rating of 6.8">
           <div class="grid-caption">
-            <span>Surface appearance</span>
+            <span>How it looks</span>
             <span>≠</span>
-            <span>solver rating</span>
+            <span>computer rating</span>
           </div>
           <div
             class="sudoku-grid"
@@ -89,7 +90,8 @@
             <span aria-hidden="true">⌁</span>
             Two centre clues feel different. Type them, or tap them in order.
           </p>
-          <p class="visual-note">Actual dataset puzzle · 23 clues · solver rating 6.8 · ID 2760549</p>
+          <p class="visual-note">Puzzle from the data · 23 clues · computer rating 6.8 · ID 2760549</p>
+          <p class="visual-note">A higher rating means the computer needed more searching. It does not tell us how hard a person would find it.</p>
         </div>
       </section>
 
@@ -100,41 +102,48 @@
         </div>
         <div class="metric reveal">
           <strong>0.035</strong>
-          <span>clue–rating correlation</span>
+          <span>link between clue count and rating</span>
         </div>
         <div class="metric reveal">
           <strong>0.12%</strong>
-          <span>variance explained by clues</span>
+          <span>rating differences explained by clues</span>
         </div>
         <div class="metric reveal">
           <strong>43.1%</strong>
-          <span>rated scanning-only</span>
+          <span>solved by the computer’s basic scanning method</span>
         </div>
       </section>
 
       <section class="dashboard-section section" id="dashboard">
         <div class="section-heading reveal">
           <div>
-            <p class="eyebrow">The decision surface</p>
+            <p class="eyebrow">The findings at a glance</p>
             <h2>One dashboard, one conclusion.</h2>
           </div>
           <p>
-            The Tableau view leads with the decision, then shows why the same clue count can contain
-            very different solver ratings.
+            The dashboard shows why puzzles with the same number of starting clues can have
+            very different computer difficulty ratings.
           </p>
         </div>
 
         <button class="dashboard-frame reveal" type="button" data-open-dashboard aria-label="Open the Tableau dashboard screenshot at full size">
           <img
             src="/assets/tableau-dashboard-clean.png?v=2"
-            alt="Tableau dashboard titled Auditing Sudoku Difficulty, showing four KPIs and charts for difficulty spread, puzzle counts and scanning-only share by clue count."
+            alt="Tableau dashboard titled Auditing Sudoku Difficulty, showing key results and charts of computer rating differences, puzzle counts and the share solved by basic scanning, grouped by clue count."
           />
           <span class="frame-action">Open full view ↗</span>
         </button>
         <p class="figure-caption">
-          Tableau Desktop workbook · 3.0M refers to records analysed; the 2.2% KPI is the provisional
-          rating-above-4.0 tail. Principal charts show clue counts 21–28, covering 99.98% of the catalogue.
+          All three million puzzle records were analysed. The 2.2% figure means puzzles with a computer
+          rating above 4.0. The charts show puzzles with 21 to 28 clues, covering 99.98% of the data.
         </p>
+        <details class="chart-guide">
+          <summary>What do the chart labels mean?</summary>
+          <p><strong>Correlation:</strong> a score showing how closely two measurements move together. The score of 0.035 is close to zero, so this check found almost no link between clue count and rating.</p>
+          <p><strong>P90 − P10:</strong> the distance between the lower and upper ends of the middle 80% of ratings. It shows how much ratings differ while leaving out the lowest and highest 10%.</p>
+          <p><strong>Scanning-only:</strong> the source computer solver finished the puzzle using its basic scanning method, without searching through possible answers. This does not mean every player would find it easy.</p>
+          <p><strong>0.12% and 0.69%:</strong> how much of the difference in ratings the tested prediction rules explained. These are not percentages of correct answers.</p>
+        </details>
       </section>
 
       <section class="story-section section" id="story">
@@ -149,8 +158,8 @@
             actually meant, and whether it came from the puzzle, the player or both.
           </p>
           <p>
-            A digital Sudoku product may need to classify thousands, or even millions, of boards. If it uses
-            an intuitive shortcut that does not match solving effort, “Easy” and “Hard” become unreliable
+            A Sudoku app may need to label thousands, or even millions, of puzzles. If it uses
+            a shortcut that does not match the effort needed to solve them, “Easy” and “Hard” become unreliable
             promises to the player.
           </p>
         </div>
@@ -159,10 +168,10 @@
           <span class="canon-chip">Canon event? Not quite.</span>
           <strong>23 clues</strong>
           <p>
-            Puzzles with exactly 23 clues range from a <b>0.0</b> solver rating to the dataset maximum of
+            Puzzles with exactly 23 clues range from a <b>0.0</b> computer rating to the highest rating in the data,
             <b>8.5</b>.
           </p>
-          <span class="trivia-foot">Same clue count. Very different solver ratings.</span>
+          <span class="trivia-foot">Same clue count. Very different computer ratings.</span>
         </aside>
       </section>
 
@@ -177,31 +186,34 @@
         <article class="finding comic-panel reveal">
           <div class="finding-number">01</div>
           <div class="finding-copy">
-            <p class="finding-label">Association</p>
-            <h3>More clues do not create a dependable difficulty ladder.</h3>
+            <p class="finding-label">Clue count</p>
+            <h3>More clues do not reliably tell us whether a puzzle is harder.</h3>
             <p>
-              Pearson correlation between clue count and rating is <strong>0.035</strong>; Spearman correlation
-              is <strong>0.041</strong>. Both sit well below the project’s 0.10 threshold for a practically useful relationship.
+              Two checks of the link between clue count and computer rating gave scores of
+              <strong>0.035</strong> and <strong>0.041</strong>. Both are close to zero, so neither check
+              found a useful link. For this project, 0.10 was the minimum score set for further consideration,
+              not a rule that applies to every analysis.
             </p>
           </div>
-          <div class="mini-visual correlation" role="img" aria-label="Clue to difficulty correlation of 0.035 on a scale where 0.10 was the weak-association threshold">
-            <div class="scale-labels"><span>0</span><span>weak threshold</span><span>0.10</span></div>
+          <div class="mini-visual correlation" role="img" aria-label="The measured link between clue count and computer rating is 0.035. The displayed scale runs from zero to the project's cutoff of 0.10.">
+            <div class="scale-labels"><span>0</span><span>project cutoff</span><span>0.10</span></div>
             <div class="scale-track"><span style="width: 35.3%"></span><i></i></div>
-            <strong>r = 0.035</strong>
+            <strong>Link = 0.035</strong>
           </div>
         </article>
 
         <article class="finding comic-panel reveal">
           <div class="finding-number">02</div>
           <div class="finding-copy">
-            <p class="finding-label">Within-group variation</p>
-            <h3>Each common clue count still contains a wide spread.</h3>
+            <p class="finding-label">Same clues, different ratings</p>
+            <h3>Puzzles with the same clue count still differ widely.</h3>
             <p>
-              For clue counts 21–28, the central 80% of ratings spans roughly three rating points.
-              Counting givens does not reliably indicate the supplied solver rating.
+              For each clue count from 21 to 28, the middle 80% of computer ratings covers about
+              three rating points. Even after leaving out the lowest and highest 10%, puzzles with
+              the same clue count still have very different ratings.
             </p>
           </div>
-          <div class="spread-chart" role="img" aria-label="Central 80 percent difficulty spread ranges from 3.0 to 3.2 rating points across clue counts 21 to 28">
+          <div class="spread-chart" role="img" aria-label="For each clue count from 21 to 28, the middle 80 percent of computer ratings covers 3.0 to 3.2 rating points.">
             <div class="spread-bars" aria-hidden="true">
               <span style="height: 96%"><i>21</i></span>
               <span style="height: 93%"><i>22</i></span>
@@ -212,7 +224,7 @@
               <span style="height: 93%"><i>27</i></span>
               <span style="height: 96%"><i>28</i></span>
             </div>
-            <p>≈ 3 rating points of spread</p>
+            <p>About 3 rating points apart</p>
           </div>
         </article>
 
@@ -220,25 +232,30 @@
           <div class="finding-number">03</div>
           <div class="finding-copy">
             <p class="finding-label">Prediction</p>
-            <h3>Visible structure still does not predict the rating.</h3>
+            <h3>The clue count and layout rules we tested predicted ratings poorly.</h3>
             <p>
-              The clue-count model explains <strong>0.12%</strong> of test-set variation. A separate linear
-              model using clue distribution, basic location and symmetry features explains only
-              <strong>0.69%</strong>. Neither contains enough signal for dependable classification.
+              On puzzles not used to build the prediction rules, clue count explained just
+              <strong>0.12%</strong> of the differences in computer ratings. A separate rule combining
+              clue count with basic measures of clue placement, balance and symmetry explained
+              only <strong>0.69%</strong>. Both did too poorly to recommend for difficulty labels.
+            </p>
+            <p>
+              The layout rule used simple straight-line relationships between basic grid measurements and ratings.
+              We did not test every clue arrangement, solving technique or more complex prediction method.
             </p>
           </div>
-          <div class="model-bars" aria-label="Model R-squared comparison">
+          <div class="model-bars" aria-label="Rating differences explained: clue count 0.12 percent; clue count and basic layout 0.69 percent. Full scale from zero to 100 percent.">
             <div>
               <span>Clues only</span>
               <div class="model-track"><i style="width: 0.12%"></i></div>
-              <b>0.0012</b>
+              <b>0.12%</b>
             </div>
             <div>
-              <span>Surface features</span>
+              <span>Clues + layout</span>
               <div class="model-track"><i style="width: 0.69%"></i></div>
-              <b>0.0069</b>
+              <b>0.69%</b>
             </div>
-            <small>Full R² scale: 0–1.00</small>
+            <small>Rating differences explained · scale: 0 to 100%</small>
           </div>
         </article>
 
@@ -249,11 +266,12 @@
           </div>
           <div>
             <p>
-              It was within my expectations that clue count would not align closely with difficulty.
-              What surprised me was how little our basic summaries of clue location, balance and
-              symmetry explained: only 0.69% of the variation in solver ratings. It made me think that difficulty may
-              depend less on how a puzzle looks and more on the techniques and reasoning required
-              to solve it.
+              I expected clue count to tell us little about difficulty. What surprised me was how
+              little the combination of clue count and our basic measures of clue placement,
+              balance and symmetry explained: only 0.69% of the differences in computer ratings.
+              It made me wonder whether difficulty depends more on the techniques and reasoning
+              needed to solve a puzzle than on how it looks. That is a question for further study,
+              not something this analysis proved.
             </p>
             <p>
               That experience can differ from player to player. Familiarity with solving techniques,
@@ -270,25 +288,30 @@
           <p class="eyebrow">Product recommendation</p>
           <h2>Let real player behaviour define difficulty.</h2>
           <p>
-            Use solver complexity to give new puzzles a provisional difficulty tier, but let observed
-            player behaviour become the primary evidence once enough data is available. Measure completion
-            time, hints, mistakes, restarts and abandonment separately across demonstrated skill levels,
-            then provide skill-calibrated labels. If one catalogue-wide label is required, combine the
-            group-level results using transparent weights that reflect the product’s player base.
+            Start with a computer estimate when a new puzzle has no player results yet. As people
+            play, use their results to improve the label. Look at how long they take, how many hints
+            and mistakes they make, and whether they restart or give up. Compare these results
+            separately for beginners, intermediate players and advanced players, so the label fits
+            their experience. If the app needs one label for everyone, combine the groups’ results
+            in proportions that reflect how many players belong to each group.
+          </p>
+          <p>
+            This is my recommendation for the next stage. The current data contains no player results,
+            so this approach has not been tested here.
           </p>
           <div class="decision-flow" aria-label="Recommended difficulty labelling process">
-            <span>Solver estimate</span><b>→</b><span>Player calibration</span><b>→</b><span>Skill-level label</span>
+            <span>Computer estimate</span><b>→</b><span>Real player results</span><b>→</b><span>Label for each skill level</span>
           </div>
           <div class="skill-universes" aria-label="The same puzzle can feel different across player skill levels">
             <article>
               <span>Universe 01</span>
               <strong>Beginner</strong>
-              <p>More hints, longer completion time and higher abandonment may signal a hard puzzle.</p>
+              <p>Needing more hints, taking longer or giving up may suggest a puzzle feels hard.</p>
             </article>
             <article>
               <span>Universe 02</span>
               <strong>Intermediate</strong>
-              <p>Recognised techniques change which logical bottlenecks still feel difficult.</p>
+              <p>Knowing more techniques can make some tricky steps easier to spot.</p>
             </article>
             <article>
               <span>Universe 03</span>
@@ -303,47 +326,49 @@
         <div class="section-heading reveal">
           <div>
             <p class="eyebrow">How the conclusion was reached</p>
-            <h2>Built to withstand the obvious questions.</h2>
+            <h2>How I checked the data and tested the idea.</h2>
           </div>
           <p>
-            The analysis separates confirmatory tests from exploration and keeps the boundary between
-            solver difficulty and human experience explicit.
+            I checked the data, tested the link with clue count, and tried two ways of predicting
+            the computer ratings. The methods and their limits are explained below.
           </p>
         </div>
 
         <ol class="method-grid">
-          <li class="reveal"><span>01</span><h3>Validate</h3><p>Checked missing values, duplicates, formats and clue counts across all rows; checked solution grids and givens on a 50,000-row sample.</p></li>
-          <li class="reveal"><span>02</span><h3>Test</h3><p>Measured Pearson and Spearman association across the complete 3M-row source.</p></li>
-          <li class="reveal"><span>03</span><h3>Engineer</h3><p>Added clue distribution, balance, location and rotational-symmetry features.</p></li>
-          <li class="reveal"><span>04</span><h3>Compare</h3><p>Evaluated clue-only and surface-feature models on an unseen 20,000-row test set.</p></li>
+          <li class="reveal"><span>01</span><h3>Check</h3><p>Checked all three million records for missing information, duplicates, valid formats and correct clue counts. Checked completed grids and their starting clues for 50,000 puzzles.</p></li>
+          <li class="reveal"><span>02</span><h3>Test</h3><p>Used two checks to see how closely clue count follows the computer rating across all three million records.</p></li>
+          <li class="reveal"><span>03</span><h3>Measure</h3><p>For 100,000 puzzles, measured where clues sit, how evenly they are spread and whether their positions match when the grid is turned halfway around.</p></li>
+          <li class="reveal"><span>04</span><h3>Compare</h3><p>Built two prediction rules using 80,000 puzzles. Checked both on the same 20,000 puzzles that were kept out when building the rules.</p></li>
         </ol>
 
         <div class="boundary-grid">
           <div class="boundary-card reveal">
             <p class="eyebrow">What this supports</p>
-            <h3>A catalogue-classification decision</h3>
-            <p>Whether simple puzzle metadata predicts the supplied solver rating well enough for provisional labels.</p>
+            <h3>A reason to avoid clue count as the main label</h3>
+            <p>In this dataset, clue count had almost no link with the computer rating, and the tested clue count and layout rules predicted it poorly.</p>
           </div>
           <div class="boundary-card boundary-muted reveal">
             <p class="eyebrow">What it does not prove</p>
-            <h3>Human-perceived difficulty or product impact</h3>
-            <p>The source rating comes from an automated solver, not observed player behaviour, enjoyment or retention.</p>
+            <h3>How hard real people find a puzzle</h3>
+            <p>The ratings came from a computer solver. We did not measure how hard people found the puzzles, whether they enjoyed them or whether they kept playing. Results from this dataset may not hold for other puzzle collections.</p>
           </div>
         </div>
       </section>
 
       <section class="source-section section">
         <div class="source-copy reveal">
-          <p class="eyebrow">Source and reproducibility</p>
-          <h2>The evidence is inspectable.</h2>
+          <p class="eyebrow">Data and project files</p>
+          <h2>You can check the work yourself.</h2>
           <p>
-            The project uses David Radcliffe’s CC0 dataset of three million Sudoku puzzles. The repository
-            includes the preparation scripts, scoped validation outputs, analytical tables, methodology and Tableau workbook.
+            The data comes from David Radcliffe’s freely available collection of three million Sudoku
+            puzzles. The GitHub project includes the Python scripts, data checks, results, method notes
+            and Tableau workbook, so others can repeat the analysis.
           </p>
         </div>
         <div class="source-links reveal">
           <a href="tableau/Sudoku%20Difficulty%20Audit.twb" download>Download Tableau workbook <span>↗</span></a>
-          <a href="docs/methodology.md">Read methodology <span>↗</span></a>
+          <a href="docs/methodology.md">Read how the analysis was done <span>↗</span></a>
+          <a href="https://github.com/elyssaenying/sudoku-beyond-the-clueverse" target="_blank" rel="noreferrer">View the project on GitHub <span>↗</span></a>
           <a href="https://www.kaggle.com/datasets/radcliffe/3-million-sudoku-puzzles-with-ratings" target="_blank" rel="noreferrer">View source dataset <span>↗</span></a>
         </div>
       </section>
